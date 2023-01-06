@@ -9,8 +9,6 @@ from skimage.metrics import normalized_mutual_information as nmi
 from skimage.metrics import peak_signal_noise_ratio as psnr
 from skimage.metrics import variation_of_information as voi
 from skimage.metrics import normalized_root_mse as NRMSE
-from scipy.spatial import distance
-
 from skimage.feature import hog
 
 from scipy.ndimage import distance_transform_edt
@@ -20,7 +18,6 @@ import matplotlib.pyplot as plt
 ###############################################################################
 ###############################################################################
 ###############################################################################
-# Loss used with distance transformed target and inverted patch:
 def mask_mean(X, Y):
     mask = Y==0
     return np.mean(X[mask])
@@ -43,13 +40,13 @@ def mask_mean_symmetric(X, Y):
 def mask_mean_symmetric_edt(X, Y):
     X_edt = distance_transform_edt(X)
     X_edt = cv2.normalize(X_edt, None, alpha=0, beta=1,
-                                      norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F) 
+                          norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F) 
 
     l1 = mask_mean(X_edt, Y)
     
     Y_edt = distance_transform_edt(Y)
     Y_edt = cv2.normalize(Y_edt, None, alpha=0, beta=1,
-                                      norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F) 
+                          norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_32F) 
 
     l2 = mask_mean(Y_edt, X)    
     return l1+l2
@@ -75,12 +72,9 @@ def nmi_neg(X, Y):
 def voi_mean(X, Y):
     return np.mean(voi(X, Y))
 
-# Loss used with distance transformed target and patch:
 def RMSE(X, Y):
     sub = np.subtract(X,Y, dtype=np.float64)
     return np.sqrt(np.mean(sub**2))
-
-###############################################################################
 
 def mse(X, Y):
     loss = np.mean(np.square(np.subtract(X,Y, dtype=np.float64)))
@@ -125,7 +119,6 @@ def hog_based(X, Y):
     hog_Y = hog(Y, orientations=9)
     
     #l=mse(hog_X, hog_Y)
-    #l=distance.euclidean(hog_X, hog_Y)
     l = np.linalg.norm(hog_X-hog_Y)
     #l=root_mean_squared_error(hog_X, hog_Y)
     #l=chi2_distance(hog_X, hog_Y)

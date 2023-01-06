@@ -8,6 +8,12 @@ import images_combination
 from matplotlib import colors as mcolors
 
 def plot_similitude(image1, image2, im1_points, im2_points, score_list, patch_w=500, patch_h=500, thickness=10):
+    """
+    3 subplots:
+        - Extracted patches from image1.
+        - Found patches in image2.
+        - Loss function score of the matches.
+    """
     
     f, axarr = plt.subplots(1,3, figsize=(17, 5))
     
@@ -56,6 +62,9 @@ def plot_similitude(image1, image2, im1_points, im2_points, score_list, patch_w=
     axarr[1].set_title('Matches Found')
 
 def plot_patches(image, patches_list, patch_w=500, patch_h=500, thickness=10):
+    """
+    Plot extracted patches in the anchor.
+    """
     
     image=np.invert(image)
     image_colored = cv2.cvtColor(image, cv2.COLOR_GRAY2RGB)
@@ -158,6 +167,9 @@ def get_adj_params(angle,
                    tl_adj_resized,
                    center_adj_resized,
                    post_patch_center_shape):
+    """
+    helper to find coordinates of adjacent patch after rotation, translation and scaling of the central patch.
+    """
     
     center_of_rotation = [0, 0]
     angle_rad = np.deg2rad(angle)
@@ -203,12 +215,13 @@ def get_adj_params(angle,
 ###############################################################################
     
 def get_list_angle(n_angles=10):
+    """Uniform distribution of angle."""
     return np.linspace(0, 2*np.pi-(2*np.pi)/n_angles, n_angles)
 
 def extract_templates_wAngle(anchor,
                              nb_patch,
                              template_size):
-
+    """Corrected extraction of multiple patches"""
     # set the angles parametrizing the lines along which to extract the templates
     angles = get_list_angle(nb_patch)
     
@@ -238,6 +251,10 @@ def extract_single_template_wAngle(anchor_cadastre
                       , template_h=500
                      ):
     """
+    Corrected extraction of one patch from an image.
+    
+    get_contour_point_at is a helper from images_utils.py
+    Otherwise, there is an offset error in the function extract_templates.
 
     """
     
@@ -259,6 +276,7 @@ def extract_adjacent_templates_wAngle(anchor_cadastre
                       , template_h=500
                      ):
     """
+    Corrected extraction of a pair of adjacent patches.
 
     """   
     
@@ -292,7 +310,6 @@ def extract_adjacent_templates(anchor_cadastre
                       , template_h=500
                      ):
     """
-
     """
     
     # extract parameters from the anchor

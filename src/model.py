@@ -29,6 +29,30 @@ import ast
 class Model:
     """
     This class represent the model used to align cadastres.
+    
+    Parameters:
+    -----------
+    
+    - loss: Callable loss function
+    - patch_numbers: number of patch to extract in anchors
+    - distance_transform: dict for the representation of the images, you can invert or not patches and targets
+                          and computes Eucilidian Distance Transform by settings the respective flag to True.
+                          dt_function is the callable function to compute EDT.
+    - adjacent_patch_process: dict to specify the adjacent patches configuration. Boolean flag to specify
+                          if you want adj patches. 'diff_angle_adj' to tuned the offset angle during the extraction
+                          of patches, note that you may need to change the threshold in the while loop
+                          of the function 'get_adjacent_patch'.
+                          'kernel_adj' is used for the dilation of adjacent patch.
+    - preprocessing_parameters: dict for the dilation and resizing of patched and targets.
+    - search_parameters: ranges for the rotation and scale. Translation cannot be specified because, either classic GA
+                         is used and the whole image space is possible or restricted GA is used and then valid translations
+                         are computed in the function 'run'.
+    - ga_parameters: main genetic algorithm parameters.
+    - loss_error: loss value if a patch is out of bounds of the target.
+    - classification_top_pop_variance: should be True to get the disruptive selection.
+    - flag_custom_ga: True to run with the restricted GA.
+    
+    For an example of configuration with restricted GA, IoU loss see the notebook RUN-MODEL.
 
     """
 
@@ -37,11 +61,12 @@ class Model:
                        loss,
                        patch_numbers=10, 
                        patch_size=500,
-                       distance_transform={'flag_target': True,
+                       distance_transform={'flag_target': False,
                                            'flag_patch': False,
-                                           'flag_invert_patch': True,
+                                           'flag_invert_patch': False,
+                                           'flag_invert_target': True,
                                            'dt_function': distance_transform_edt},
-                       adjacent_patch_process={'flag_adj_patch': True,
+                       adjacent_patch_process={'flag_adj_patch': False,
                                                'diff_angle_adj': 0.2,
                                                'patch_adj_size': 300,
                                                'kernel_adj': np.ones((5, 5), np.uint8)},
@@ -60,9 +85,7 @@ class Model:
                                        'crossover_type':'uniform',\
                                        'max_iteration_without_improv':None},
                         loss_error=10000,
-                        classification_top_pop_variance=False,
-                        classification_iou=False,
-                        classification_H_rank=False,
+                        classification_top_pop_variance=True,
                         flag_custom_ga=True,
                         experience_name=""):
         
@@ -123,8 +146,6 @@ class Model:
         self.kernel_adj = adjacent_patch_process['kernel_adj']
         
         self.classification_top_pop_variance=classification_top_pop_variance
-        self.classification_iou=classification_iou
-        self.classification_H_rank=classification_H_rank
         
         self.flag_custom_ga=flag_custom_ga
         self.experience_name=experience_name
@@ -155,8 +176,6 @@ class Model:
                                                           self.kernel_dilate_target,
                                                           self.resize_preprocessing)
         
-        #if self.flag_dt_target:
-        # Prepare target for distance transform:
         target_image_process = np.invert(target_image_process)
         _ ,target_image_process = cv2.threshold(target_image_process,200,255,cv2.THRESH_BINARY)
                 
@@ -314,7 +333,7 @@ class Model:
             if self.classification_top_pop_variance:
                 return res, model.pop_report
             else:
-                return res, "" #model.pop_report
+                return res, None
         else:
             return res, None
         
@@ -361,6 +380,7 @@ class Model:
         return patch_list_adj, patch_points_list_adj
     
     def get_distance_center_patch(self, vec1_p, vec2_a, p_size, a_size):
+        """compute distance between the center of a principal patch 'vec1_p' and an adjacent patch 'vec2_a'"""
         p_center = [p_size//2, p_size//2]
         a_center = [a_size//2, a_size//2]
         vec_distance = (vec2_a+a_center)-(vec1_p+p_center) 
@@ -635,7 +655,7 @@ class Model:
         csv_file_model = f"../results/csv/{self.experience_name}_{d1_name}_{d2_name}_date_{self.date_ymd}_{self.date_hm}_model.csv"
 
         csv_columns = ['distance_transform','adjacent_patch_process','preprocessing_parameters',
-                       'search_parameters','ga_parameters','loss', 'c_tp_pop_var', 'c_iou', 'c_H_rank']
+                       'search_parameters','ga_parameters','loss', 'c_tp_pop_var']
 
         csv_adjacent_patch_process=self.adjacent_patch_process.copy()
         csv_adjacent_patch_process['kernel_adj']=csv_adjacent_patch_process['kernel_adj'].tolist()
@@ -660,8 +680,6 @@ class Model:
             'ga_parameters':self.ga_parameters,
             'loss':loss_function_name,
             'c_tp_pop_var':self.classification_top_pop_variance,
-            'c_iou':self.classification_iou,
-            'c_H_rank':self.classification_H_rank,
         }
 
         try:

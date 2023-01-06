@@ -4,7 +4,7 @@ import imutils
 
 def get_transformed_points(x, y, template, angle, scale):
     """
-    
+    Get new translations x and y after rotation and scaling.
     Refactor code from the Alignment tool.
     
     """
