@@ -1,0 +1,212 @@
+{
+    "adjacent_patch_process": {
+        "diff_angle_adj": 0.15,
+        "flag_adj_patch": false,
+        "kernel_adj": [
+            [
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1
+            ]
+        ],
+        "patch_adj_size": 300
+    },
+    "c_H_rank": false,
+    "c_iou": false,
+    "c_tp_pop_var": false,
+    "distance_transform": {
+        "dt_function": "<function distance_transform_edt at 0x7f419f8776d0>",
+        "flag_invert_patch": true,
+        "flag_patch": false,
+        "flag_target": false
+    },
+    "elapsed_time": "00:18:09.11",
+    "flag_custom_ga": true,
+    "ga_parameters": {
+        "crossover_probability": 0.9,
+        "crossover_type": "uniform",
+        "elit_ratio": 0.01,
+        "max_iteration_without_improv": null,
+        "max_num_iteration": 2000,
+        "mutation_probability": 0.7,
+        "parents_mut_portion": 0.25,
+        "parents_portion": 0.15,
+        "population_size": 200
+    },
+    "loss": "<function mask_mean_symmetric at 0x7f419c6efac0>",
+    "patch_numbers": 20,
+    "patch_size": 500,
+    "preprocessing_parameters": {
+        "kernel_dilate_patch": [
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ]
+        ],
+        "kernel_dilate_target": [
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ],
+            [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ]
+        ],
+        "resize": 7
+    },
+    "search_parameters": {
+        "angle_range": [
+            0,
+            360
+        ],
+        "scale_range": [
+            0.95,
+            1.05
+        ]
+    }
+}
