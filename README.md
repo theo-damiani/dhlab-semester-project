@@ -1,6 +1,6 @@
 # Automatic georeferencing of historical cadastres
 
-Abstract-This semester project has been hosted by the Digital Humanities Laboratory founded by Professor
+Abstract-This semester project has been hosted by the Digital Humanities Laboratory at EPFL founded by Professor
 Frédéric Kaplan. It will focus on the georeferencing, i.e. spatial recalibration of 19th-century "Napoleonic"
 cadastral sheets. This project attempts to address the need for the automatic grouping of huge corpora
 like the Napoleonic cadastres. Indeed, a single map at the level of a city or a region would be a significant
