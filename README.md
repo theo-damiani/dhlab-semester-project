@@ -31,3 +31,14 @@ json
 ast
 csv
 ```
+##
+
+For testing purpose:
+  - Open RUN-MODEL.ipynb:
+      - Specify which cadastres you want to align with the variable list_cadastres_name.
+      - Run the notebook. Results will be saved in /results/csv/.
+  - Create a new folder in results/csv/ and drag your results in it.
+  - Open READ-EXP-STATS.ipynb:
+      - Specify the folder of your results in the variable EXPNAME.
+      - Run the notebook to display plots like in the report.
+  - For specific result on one alignement see the notebook READ-EXP.ipynb
